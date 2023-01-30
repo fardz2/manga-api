@@ -15,9 +15,9 @@ router.get("/manga/popular", async (req, res) => {
 router.get("/manga/page/:pagenumber", async (req, res) => {
   let pagenumber = req.params.pagenumber;
   let url =
-    pagenumber === "1"
-      ? "https://data.komiku.id/pustaka/"
-      : `https://data.komiku.id/pustaka/page/${pagenumber}/`;
+    pagenumber === "1" ?
+    "https://data.komiku.id/pustaka/" :
+    `https://data.komiku.id/pustaka/page/${pagenumber}/`;
 
   try {
     const response = await AxiosService(url);
@@ -70,15 +70,16 @@ router.get("/manga/detail/:slug", async (req, res) => {
   const slug = req.params.slug;
   let endpoint;
   console.log(slug);
-  if(slug === 'tokyo%e5%8d%8drevengers'){
-    endpoint = 'tokyo卍revengers/';
-  }else{
+  if (slug === "tokyo%e5%8d%8drevengers") {
+    endpoint = "tokyo卍revengers/";
+  } else {
     endpoint = slug;
   }
   try {
     const response = await AxiosService(`manga/${endpoint}/`);
     const $ = cheerio.load(response.data);
     const element = $(".perapih");
+    console.log(element);
     let genre_list = [];
     let chapter = [];
     const obj = {};
@@ -87,7 +88,9 @@ router.get("/manga/detail/:slug", async (req, res) => {
     const getMeta = element.find(".inftable > tbody").first();
     obj.title = $("#Judul > h1").text().trim();
     obj.type = $("tr:nth-child(2) > td:nth-child(2)").find("b").text();
-    obj.author = $("#Informasi > table > tbody > tr:nth-child(4) > td:nth-child(2)")
+    obj.author = $(
+        "#Informasi > table > tbody > tr:nth-child(4) > td:nth-child(2)"
+      )
       .text()
       .trim();
     obj.status = $(getMeta).children().eq(4).find("td:nth-child(2)").text();
@@ -220,9 +223,9 @@ router.get("/genres/:slug/:pagenumber", async (req, res) => {
   const slug = req.params.slug;
   const pagenumber = req.params.pagenumber;
   const url =
-    pagenumber === "1"
-      ? `https://data.komiku.id/pustaka/?orderby=modified&genre=${slug}&genre2=&status=&category_name=`
-      : `https://data.komiku.id/pustaka/page/${pagenumber}/?orderby=modified&genre=${slug}&genre2&status&category_name`;
+    pagenumber === "1" ?
+    `https://data.komiku.id/pustaka/?orderby=modified&genre=${slug}&genre2=&status=&category_name=` :
+    `https://data.komiku.id/pustaka/page/${pagenumber}/?orderby=modified&genre=${slug}&genre2&status&category_name`;
   try {
     const response = await AxiosService(url);
     const $ = cheerio.load(response.data);
@@ -259,9 +262,9 @@ router.get("/genres/:slug/:pagenumber", async (req, res) => {
 router.get("/manga/popular/:pagenumber", async (req, res) => {
   const pagenumber = req.params.pagenumber;
   const url =
-    pagenumber === "1"
-      ? `other/rekomendasi/`
-      : `other/rekomendasi/page/${pagenumber}/`;
+    pagenumber === "1" ?
+    `other/rekomendasi/` :
+    `other/rekomendasi/page/${pagenumber}/`;
 
   try {
     const response = await AxiosService(url);
@@ -352,9 +355,9 @@ router.get("/manhwa/:pagenumber", async (req, res) => {
 const getManhuaManhwa = async (req, res, type) => {
   let pagenumber = req.params.pagenumber;
   let url =
-    pagenumber === "1"
-      ? `https://data.komiku.id/pustaka/?orderby=&category_name=${type}&genre=&genre2=&status=`
-      : `https://data.komiku.id/pustaka/page/${pagenumber}/?orderby&category_name=${type}&genre&genre2&status`;
+    pagenumber === "1" ?
+    `https://data.komiku.id/pustaka/?orderby=&category_name=${type}&genre=&genre2=&status=` :
+    `https://data.komiku.id/pustaka/page/${pagenumber}/?orderby&category_name=${type}&genre&genre2&status`;
 
   try {
     console.log(url);
